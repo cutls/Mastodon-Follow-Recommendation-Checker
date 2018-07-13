@@ -1,5 +1,20 @@
 <?php
 session_start();
+require("lang.php");
+ini_set('display_errors', 0);
+if($_GET){
+    if($_GET["lang"]){
+        $_SESSION["lang"]=$_GET["lang"];
+        header('Location: ./');
+    }else{
+        if($_SESSION["lang"]!="en"){
+            $_SESSION["lang"]="ja";
+        }
+    }
+}
+
+
+$lang=$_SESSION["lang"];
 if (isset($_GET['code']) && isset($_GET['state'])) {
     if(isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on'){
 	 $runfile = 'https://'.$_SERVER['SERVER_NAME'].$_SERVER['PHP_SELF'];   
@@ -107,9 +122,9 @@ if (!empty($_GET['logout'])) {
 }
 ?>
 <!doctype html>
-<html lang="en">
+<html lang="<?php echo $lang;?>">
 	<head>
-		<title>フォローレコメンデーションチェッカー</title>
+		<title><?php echo $title[$lang];?></title>
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=0.5, maximum-scale=1, user-scalable=yes">
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
@@ -138,13 +153,14 @@ if (!empty($_GET['logout'])) {
         </style>
 	</head>
 <body>
-	<h1>フォローレコメンデーションチェッカー</h1>
+	<h1><?php echo $title[$lang];?></h1>
+    <a href="?lang=en">English</a>/<a href="?lang=ja">日本語</a><br>
 	<?php if ($mode == 'login'): ?>
-	<h4>マストドンログイン</h4>
+	<h4><?php echo $login_txt[$lang];?></h4>
 	<div id="first-login">
 	<span id="mess"></span>
 	<br>
-	<label class="sr-only" for="url">インスタンスのURL</label>
+	<label class="sr-only" for="url"><?php echo $url[$lang];?></label>
 	<div class="input-group" style="max-width:calc(100% - 10px); width:400px;">
 	<div class="input-group-addon">https://
 	</div>
@@ -153,21 +169,22 @@ if (!empty($_GET['logout'])) {
 	<div id="suggest">
 	</div>
 	<br>
-	<button id="login" class="btn btn-primary">ログイン</button>
+	<button id="login" class="btn btn-primary"><?php echo $login[$lang];?></button>
 	<script src="./js/login.js"></script>
 	<?php elseif ($mode == 'show'): ?>
-	<h4>結果を見る</h4>Mastodon 2.4.3以上かつ、今まで絡みがあってフォローしていないユーザーが表示されます。
-	<br>表示されない場合は対応していないか、候補がいません。
+	<h4><?php echo $show_result[$lang];?></h4>
+    <?php echo $note[$lang];?>
 	<br>
 	<div id="result">
 	<?php
         echo $html;
     ?>
 	</div>
-	<a href="?logout=true" class="btn btn-danger">ログアウト</a>
+	<a href="?logout=true" class="btn btn-danger"><?php echo $logout[$lang];?></a>
 	<?php endif; ?>
 	<br>&copy; 
 	<a href="htps://kirishima.cloud/@Cutls" target="_blank">Cutls P</a>2018.
-	<br>フォローレコメンデーションに関しては、
-	<a href="https://ja.mstdn.wiki/%E3%83%95%E3%82%A9%E3%83%AD%E3%83%BC%E3%83%AC%E3%82%B3%E3%83%A1%E3%83%B3%E3%83%87%E3%83%BC%E3%82%B7%E3%83%A7%E3%83%B3_(%E3%83%9E%E3%82%B9%E3%83%88%E3%83%89%E3%83%B3%E3%81%AE%E6%A9%9F%E8%83%BD)" target="_blank">フォローレコメンデーション (マストドンの機能)</a>を参照。
+	<br><?php echo $before_about[$lang];?>
+	<a href="https://ja.mstdn.wiki/%E3%83%95%E3%82%A9%E3%83%AD%E3%83%BC%E3%83%AC%E3%82%B3%E3%83%A1%E3%83%B3%E3%83%87%E3%83%BC%E3%82%B7%E3%83%A7%E3%83%B3_(%E3%83%9E%E3%82%B9%E3%83%88%E3%83%89%E3%83%B3%E3%81%AE%E6%A9%9F%E8%83%BD)" target="_blank">フォローレコメンデーション (マストドンの機能)</a>
+    <?php echo $after_about[$lang];?>
 </body>

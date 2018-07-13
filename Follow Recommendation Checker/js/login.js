@@ -33,10 +33,15 @@ function instance(red) {
     });
   }
   
-  function load(red) {
+  function load(lang) {
+    if(lang=="en"){
+      var txt="Last use:"
+    }else{
+      var txt="最後に使ったインスタンス:"
+    }
     var last = localStorage.getItem("last");
     if (last) {
-      $("#suggest").html('最後に使ったインスタンス:<a onclick="login(\'' + last + '\',\'' + red + '\',)" style="cursor:pointer;"><u>' + last + '</u></a>');
+      $("#suggest").html(txt+':<a onclick="login(\'' + last + '\')" style="cursor:pointer;"><u>' + last + '</u></a>');
     }
   }
   $('#login').on('click', function () {
