@@ -1,7 +1,11 @@
 <?php
 session_start();
 if (isset($_GET['code']) && isset($_GET['state'])) {
-    $runfile = 'http://'.$_SERVER['SERVER_NAME'].$_SERVER['PHP_SELF'];
+    if(isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on'){
+	 $runfile = 'https://'.$_SERVER['SERVER_NAME'].$_SERVER['PHP_SELF'];   
+    }else{
+	 $runfile = 'http://'.$_SERVER['SERVER_NAME'].$_SERVER['PHP_SELF'];   
+    }
     $array = explode(' ', $_GET['state']);
     $data = [
         'client_id' => $array[1],
